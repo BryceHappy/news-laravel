@@ -1,12 +1,12 @@
 <?php
 
-class AdminHistoriesController extends \BaseController {
+class AdminHistoryListController extends \BaseController {
 
-	protected $history;
-    public function __construct(History $history)
+	protected $list;
+    public function __construct(List $list)
     {
         parent::__construct();
-        $this->history = $history;
+        $this->history = $list;
     }
 
 	/**
@@ -15,19 +15,17 @@ class AdminHistoriesController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function getIndex()
+	public function getIndex($v_int_id)
 	{
+        $p_obj_history = History::find($v_int_id);
+        $p_obj_lists = $p_obj_history->lists()->orderBy('created_at', 'ASC')->get();
 
-
-        // Title
-        // $title = Lang::get('admin/histories/title.history_management');
-        $title = "懶人包管理";
-
-        // Grab all the blog posts
-        $historys = $this->history;
+        // Title        
+        $p_str_title = "事件管理";
+        $p_int_historyId = $v_int_id;
 
         // Show the page
-        return View::make('admin/histories/index', compact('histories', 'title'));
+        return View::make('admin/histories/list/index', array('lists' =>$p_obj_lists, 'history_id' => $p_obj_history, 'title' => $p_str_title));
 	}
 
 	/**
@@ -40,7 +38,7 @@ class AdminHistoriesController extends \BaseController {
 	{
 
         // Title
-        $title = "新增懶人包";
+        $title = "Add History";
 
         // Show the page
         return View::make('admin/histories/create_edit', compact('title'));
@@ -119,10 +117,10 @@ class AdminHistoriesController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function getEdit($history)
+	public function getEdit($list)
 	{
         // Title
-        $title = "編輯懶人包";
+        $title = "編輯";
 
         // Show the page
         return View::make('admin/histories/create_edit', compact('history', 'title'));
@@ -140,7 +138,7 @@ class AdminHistoriesController extends \BaseController {
 		//
 	}
 
-    public function getDelete($history)
+    public function getDelete($list)
     {
         // Title
         $title = Lang::get('admin/histories/title.history_delete');
@@ -149,7 +147,7 @@ class AdminHistoriesController extends \BaseController {
         return View::make('admin/histories/delete', compact('history', 'title'));
     }
 
-    public function postDelete($history)
+    public function postDelete($list)
     {
         // Declare the rules for the form validation
         $rules = array(
@@ -162,12 +160,12 @@ class AdminHistoriesController extends \BaseController {
         // Check if the form validates with success
         if ($validator->passes())
         {
-            $id = $history->id;
-            $history->delete();
+            $id = $list->id;
+            $list->delete();
 
             // Was the blog post deleted?
-            $history = History::find($id);
-            if(empty($history))
+            $list = History::find($id);
+            if(empty($list))
             {
                 // Redirect to the blog posts management page
                 return Redirect::to('admin/histories')->with('success', Lang::get('admin/histories/messages.delete.success'));

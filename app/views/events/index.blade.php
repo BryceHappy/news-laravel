@@ -1,1 +1,0 @@
-C:\Program Files\Ampps\www\bb\app/views/events/index.blade.php

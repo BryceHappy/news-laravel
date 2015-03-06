@@ -122,3 +122,16 @@ Route::filter('detectLang',  function($route, $request, $lang = 'auto')
         App::setLocale($userLang);
     }
 });
+
+
+Route::filter('editFilter',  function() {
+	$p_obj_history = History::find(Request::segment(2));
+	if($p_obj_history->other_edit == 0) {
+		Session::flash('history_id',Request::segment(2) );
+		return Redirect::to('/list/create');
+	} else {
+		Session::flash('message', '此懶人包不開放編輯');
+		return Redirect::to('/history');
+	}
+});
+

@@ -126,32 +126,32 @@
 
 
  <script type="text/javascript">
-$(document).ready(function() {
-    $('.close_popup').click(function() {
-        parent.oTable.fnReloadAjax();
-        parent.jQuery.fn.colorbox.close();
-        return false;
-    });
-    $('#deleteForm').submit(function(event) {
-        var form = $(this);
-        $.ajax({
-            type: form.attr('method'),
-            url: form.attr('action'),
-            data: form.serialize()
-        }).done(function() {
-            parent.jQuery.colorbox.close();
-            parent.oTable.fnReloadAjax();
-        }).fail(function() {});
-        event.preventDefault();
-    });
-});
+	$(document).ready(function() {
+	    $('.close_popup').click(function() {
+	        parent.oTable.fnReloadAjax();
+	        parent.jQuery.fn.colorbox.close();
+	        return false;
+	    });
+	    $('#deleteForm').submit(function(event) {
+	        var form = $(this);
+	        $.ajax({
+	            type: form.attr('method'),
+	            url: form.attr('action'),
+	            data: form.serialize()
+	        }).done(function() {
+	            parent.jQuery.colorbox.close();
+	            parent.oTable.fnReloadAjax();
+	        }).fail(function() {});
+	        event.preventDefault();
+	    });
+	});
 
-$('#datetimepicker').datetimepicker({
-	format:'Y-m-d H:i:s',
-	dayOfWeekStart : 1,
-	lang:'zh-TW',
+	$('#datetimepicker').datetimepicker({
+		format:'Y-m-d H:i:s',
+		dayOfWeekStart : 1,
+		lang:'zh-TW',
 
-});
+	});
 
 // $('#datetimepicker').datetimepicker({value:'2015/04/15 05:03',step:10});
 

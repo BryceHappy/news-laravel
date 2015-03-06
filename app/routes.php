@@ -19,7 +19,6 @@ Route::model('user', 'User');
 Route::model('comment', 'Comment');
 Route::model('post', 'Post');
 Route::model('role', 'Role');
-Route::model('histories', 'History');
 
 /** ------------------------------------------
  *  Route constraint patterns
@@ -32,6 +31,7 @@ Route::pattern('user', '[0-9]+');
 Route::pattern('role', '[0-9]+');
 Route::pattern('token', '[0-9a-z]+');
 
+
 /** ------------------------------------------
  *  Admin Routes
  *  ------------------------------------------
@@ -39,7 +39,9 @@ Route::pattern('token', '[0-9a-z]+');
 Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 {
 
-    # Comment Management
+    Route::pattern('id', '[0-9]+');
+
+    # Histories Management
     Route::get('histories/{histories}/edit', 'AdminHistoriesController@getEdit');
     Route::post('histories/{histories}/edit', 'AdminHistoriesController@postEdit');
     Route::get('histories/{histories}/delete', 'AdminHistoriesController@getDelete');
@@ -81,6 +83,11 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
     Route::controller('/', 'AdminDashboardController');
 });
 
+Route::pattern('history_id', '[0-9]+');
+
+Route::resource('history', 'HistoriesController');
+Route::get('listCreate/{history_id}', array('as' => 'ListCreate','before' => 'editFilter'));
+Route::resource('list', 'HistoryListsController');
 
 /** ------------------------------------------
  *  Frontend Routes
@@ -111,6 +118,7 @@ Route::get('contact-us', function()
     // Return about us page
     return View::make('site/contact-us');
 });
+
 
 # Posts - Second to last set, match slug
 Route::get('/{id}', 'BlogController@getView');
