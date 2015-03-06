@@ -56,7 +56,7 @@ class History extends \Eloquent {
 
 	public function lists()
 	{
-		return $this->hasMany('HistoryList')->OrderBy('created_at');
+		return $this->hasMany('HistoryList')->OrderBy('time','DESC');
 	}
 
     /**

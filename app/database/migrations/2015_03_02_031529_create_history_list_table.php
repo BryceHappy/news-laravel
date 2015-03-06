@@ -21,8 +21,9 @@ class CreateHistoryListTable extends Migration {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('content');
             $table->integer('other_edit')->unsigned();
-            $table->string('pic_url');
-            $table->dateTime('time')->default('0000-00-00 00:00:00');            
+            $table->text('pic_url');
+            $table->text('ref_url');
+            $table->dateTime('time')->default('0000-00-00 00:00:00');
 			$table->timestamps();
 		});
 	}

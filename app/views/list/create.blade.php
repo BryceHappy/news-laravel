@@ -26,6 +26,11 @@
 	</div>
 
 	<div class="form-group">
+		{{ Form::label('ref_url', '參考網址') }}
+		{{ Form::text('ref_url', Input::old('ref_url'), array('class' => 'form-control')) }}
+	</div>
+
+	<div class="form-group">
 		{{ Form::label('pic_url', '照片網址') }}
 		{{ Form::text('pic_url', Input::old('pic_url'), array('class' => 'form-control')) }}
 	</div>

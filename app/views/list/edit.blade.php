@@ -10,21 +10,31 @@
 <div class="container">
 
 @include('layouts.history.topnav')
-<h1>Edit {{ $history->history }}</h1>
+<h1>編輯</h1>
 
 <!-- if there are creation errors, they will show here -->
 {{ HTML::ul($errors->all()) }}
 
-{{ Form::model($history, array('action' => array('HistoriesController@update', $history->id), 'method' => 'PUT')) }}
-
+{{ Form::model($lists, array('action' => array('HistoryListsController@update', $lists->id), 'method' => 'PUT')) }}
+	{{ Form::hidden('history_id', $history_id) }}
 	<div class="form-group">
-		{{ Form::label('history', 'history') }}
-		{{ Form::text('history', null, array('class' => 'form-control')) }}
+		{{ Form::label('content', '事件內容') }}
+		{{ Form::text('content', null, array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">
 		{{ Form::label('time', '發生時間') }}
 		{{ Form::text('time', Input::old('time'), array('class' => 'form-control')) }}
+	</div>
+
+	<div class="form-group">
+		{{ Form::label('pic_url', '參考網址') }}
+		{{ Form::text('pic_url', Input::old('pic_url'), array('class' => 'form-control')) }}
+	</div>
+
+	<div class="form-group">
+		{{ Form::label('ref_url', '照片網址') }}
+		{{ Form::text('ref_url', Input::old('ref_url'), array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">

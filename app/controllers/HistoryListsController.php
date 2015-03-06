@@ -5,7 +5,8 @@ class HistoryListsController extends \BaseController {
 	private $p_ary_rules = array(
 			'history_id'       => 'required',
 			'content'       => 'required',
-			'url' => 'sometimes|url',
+			'pic_url' => 'sometimes|url',
+			'ref_url' => 'sometimes|url',
 			'time'      => 'required',
 			'other_edit' => 'required|numeric'
 		);
@@ -73,6 +74,8 @@ class HistoryListsController extends \BaseController {
 			$p_obj_historyList->content       = Input::get('content');
 			$p_obj_historyList->time      = Input::get('time');
 			$p_obj_historyList->other_edit = Input::get('other_edit');
+			$p_obj_historyList->pic_url = Input::get('pic_url');
+			$p_obj_historyList->ref_url = Input::get('ref_url');
 			$p_obj_historyList->history_id = $ary_id[1];
 			$p_obj_historyList->user_id = 3;
 			$p_obj_historyList->save();
@@ -108,11 +111,10 @@ class HistoryListsController extends \BaseController {
 	public function edit($v_int_id)
 	{
 		// get the history
-		$p_obj_historyList= HistoryList::find($v_int_id);
-
+		$p_obj_historyList = HistoryList::find($v_int_id);		
+		$p_int_history_CryptId = Crypt::encrypt("hisTory@".$p_obj_historyList->history_id);
 		// show the edit form and pass the history
-		return View::make('list.edit')
-			->with('history', $p_obj_historyList);
+		return View::make('list.edit', array('lists' => $p_obj_historyList, 'history_id' => $p_int_history_CryptId));			
 	}
 
 	/**
@@ -123,31 +125,34 @@ class HistoryListsController extends \BaseController {
 	 */
 	public function update($v_int_id)
 	{
-		// validate
-		// read more on validation at http://laravel.com/docs/validation
-		// $rules = array(
-		// 	'name'       => 'required',
-		// 	'email'      => 'required|email',
-		// 	'history_level' => 'required|numeric'
-		// );
+
 		$validator = Validator::make(Input::all(), $this->p_ary_rules);
 
 		// process the login
 		if ($validator->fails()) {
-			return Redirect::to('list/' . $v_int_id . '/edit')
+			$decrypted = Crypt::decrypt(Input::get('history_id'));
+			$ary_id = explode("@", $decrypted);
+			Session::flash('history_id', $ary_id[1]);
+			return Redirect::to('list/create')
 				->withErrors($validator)
 				->withInput(Input::except('password'));
 		} else {
+			$decrypted = Crypt::decrypt(Input::get('history_id'));
+			$ary_id = explode("@", $decrypted);
 			// store
 			$p_obj_historyList = HistoryList::find($v_int_id);
-			$p_obj_historyList->history       = Input::get('history');
+			$p_obj_historyList->content       = Input::get('content');
 			$p_obj_historyList->time      = Input::get('time');
 			$p_obj_historyList->other_edit = Input::get('other_edit');
+			$p_obj_historyList->pic_url = Input::get('pic_url');
+			$p_obj_historyList->ref_url = Input::get('ref_url');
+			$p_obj_historyList->history_id = $ary_id[1];
+			$p_obj_historyList->user_id = 3;
 			$p_obj_historyList->save();
 
 			// redirect
 			Session::flash('message', '更新成功！');
-			return Redirect::to('history');
+			return Redirect::to('history/'.$ary_id[1]);
 		}
 	}
 
@@ -158,14 +163,15 @@ class HistoryListsController extends \BaseController {
 	 * @return Response
 	 */
 	public function destroy($v_int_id)
-	{
+	{		
 		// delete
 		$p_obj_historyList = HistoryList::find($v_int_id);
+		$p_int_historyId = $p_obj_historyList->history_id;
 		$p_obj_historyList->delete();
 
 		// redirect
 		Session::flash('message', '刪除成功！');
-		return Redirect::to('history');
+		return Redirect::to('history/'.$p_int_historyId);
 	}
 
 }
