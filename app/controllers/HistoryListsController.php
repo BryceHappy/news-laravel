@@ -40,8 +40,12 @@ class HistoryListsController extends \BaseController {
 	{				
 		if(Session::has('history_id')) {
 			// $p_int_history_CryptId = Crypt::encrypt("hisTory@".Session::get('history_id'));
-			$p_int_history_CryptId = Crypt::encrypt("hisTory@".Session::get('history_id'));
-            return View::make('list.create', array('history_id' => $p_int_history_CryptId));						
+			$p_int_historyId = Session::get('history_id');
+			$p_obj_lastHistory = HistoryList::where('history_id','=',$p_int_historyId)->OrderBy('id','DESC')->first();
+			$p_str_last_time = $p_obj_lastHistory->time;
+			$p_int_history_CryptId = Crypt::encrypt("hisTory@".$p_int_historyId);
+			Session::flash('history_id', $p_int_historyId);
+            return View::make('list.create', array('history_id' => $p_int_history_CryptId, 'last_time' => $p_str_last_time));						
 		} else {			
 			Session::flash('message', '請先選擇懶人包！');
 			return Redirect::to('history');

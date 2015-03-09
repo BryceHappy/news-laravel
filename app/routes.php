@@ -86,8 +86,23 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 Route::pattern('history_id', '[0-9]+');
 
 Route::resource('history', 'HistoriesController');
+Route::resource('show', 'ShowListsController');
 Route::get('listCreate/{history_id}', array('as' => 'ListCreate','before' => 'editFilter'));
 Route::resource('list', 'HistoryListsController');
+
+Route::get('sample', function()
+{
+    // Return about us page
+    return View::make('sample');
+});
+
+
+Route::get('test', function()
+{
+    // Return about us page
+    return View::make('test');
+});
+
 
 /** ------------------------------------------
  *  Frontend Routes

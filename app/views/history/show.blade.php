@@ -23,6 +23,8 @@
 			發生時間: {{ $history->time }}<br>
 		</p>
 	</div>
+{{ link_to_route('ListCreate', '新增事件', array($history->id),array('class' => 'btn btn-small btn-success')) }}｜
+<a class="btn btn-sm btn-info " href="{{ URL::to('show/' . $history->id) }}">編輯</a>	
 @if(count($history->lists) > 0)
 	<table class="table table-striped table-bordered">
 		<thead>
@@ -66,7 +68,7 @@
 @else
 	沒有事件<BR>
 @endif
-{{ link_to_route('ListCreate', '新增事件', array($history->id),array('class' => 'btn btn-small btn-success')) }}
+
 </div>	
 </body>
 </html>

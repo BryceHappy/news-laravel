@@ -15,6 +15,13 @@
 
 {{ Form::open(array('url' => 'list')) }}
 	{{ Form::hidden('history_id', $history_id) }}
+
+	@if(isset($last_time))
+
+		{{ Form::hidden('last_time', $last_time ,  array('id' => 'last_time')) }}
+	@else
+		{{ Form::hidden('last_time', '',  array('id' => 'last_time')) }}
+	@endif
 	<div class="form-group">
 		{{ Form::label('content', '事件內容') }}
 		{{ Form::text('content', Input::old('content'), array('class' => 'form-control')) }}
@@ -22,7 +29,7 @@
 
 	<div class="form-group">
 		{{ Form::label('time', '發生時間') }}
-		{{ Form::text('time', Input::old('time'), array('class' => 'form-control')) }}
+		{{ Form::text('time', Input::old('time'), array('class' => 'form-control' )) }}
 	</div>
 
 	<div class="form-group">
@@ -47,5 +54,10 @@
 </div>
 </body>
 	@include('layouts.bottomnav')
+
+<script type="text/javascript">
+	$('#time').val($('#last_time').val());
+</script>	
+
 </html>
 

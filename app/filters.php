@@ -135,3 +135,9 @@ Route::filter('editFilter',  function() {
 	}
 });
 
+Route::filter('show',  function() {
+
+	Session::flash('history_id',Request::segment(2) );
+	return Redirect::to('/list/create');
+
+});
